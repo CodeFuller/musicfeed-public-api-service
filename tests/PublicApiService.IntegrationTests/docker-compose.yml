@@ -1,0 +1,15 @@
+version: '3.5'
+
+services:
+
+  updates-service:
+    image: codefuller/musicfeed-updates-service:latest
+    networks:
+      - musicfeed-test-network
+    ports:
+      - "8102:80"
+
+networks:
+  musicfeed-test-network:
+    name: musicfeed-test-network
+    driver: bridge
