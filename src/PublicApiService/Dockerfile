@@ -1,5 +1,5 @@
 # docker-compose -f "tests/PublicApiService.IntegrationTests/docker-compose.yml" up --detach --no-build
-# docker build --network=musicfeed-test-network -t musicfeed/api-service-build:latest -f "src/PublicApiService/Dockerfile" .
+# docker build --network=musicfeed-test-network -t musicfeed/api-service:latest -f "src/PublicApiService/Dockerfile" .
 
 FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
 EXPOSE 80

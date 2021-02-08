@@ -13,6 +13,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PublicApiService.Integratio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PublicApiService.UnitTests", "tests\PublicApiService.UnitTests\PublicApiService.UnitTests.csproj", "{CF41E866-FEA5-43EF-A9B7-31520CCCA4FC}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "deploy", "deploy", "{17087091-6E7A-4A5E-AA53-E8E1FE28F431}"
+	ProjectSection(SolutionItems) = preProject
+		deploy\api-service.dev.yaml = deploy\api-service.dev.yaml
+		deploy\api-service.yaml = deploy\api-service.yaml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

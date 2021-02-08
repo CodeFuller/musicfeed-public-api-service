@@ -1,3 +1,13 @@
+# https://medium.com/swlh/how-to-run-locally-built-docker-images-in-kubernetes-b28fbc32cc1d
+
+# To run local Docker image in Kubernetes:
+# eval $(minikube -p minikube docker-env)
+# docker-compose -f "tests/PublicApiService.IntegrationTests/docker-compose.yml" up --detach --no-build
+# docker build --network=musicfeed-test-network -t musicfeed/api-service:latest -f "src/PublicApiService/Dockerfile" .
+# kubectl create -f ../musicfeed-updates-service.git/deploy/updates-service.yaml -f "deploy/api-service.dev.yaml"
+# kubectl port-forward service/api-service 8080:80
+# kubectl delete -f ../musicfeed-updates-service.git/deploy/updates-service.yaml -f "deploy/api-service.dev.yaml"
+
 apiVersion: v1
 kind: Service
 metadata:
@@ -19,7 +29,7 @@ metadata:
   labels:
     app: api-service
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: api-service
@@ -30,7 +40,8 @@ spec:
     spec:
       containers:
         - name: api-service
-          image: codefuller/musicfeed-api-service:latest
+          image: musicfeed/api-service:latest
+          imagePullPolicy: Never
           ports:
             - containerPort: 80
           livenessProbe:
