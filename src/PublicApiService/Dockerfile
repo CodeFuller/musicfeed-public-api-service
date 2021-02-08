@@ -1,3 +1,6 @@
+# docker-compose -f "tests/PublicApiService.IntegrationTests/docker-compose.yml" up --detach --no-build
+# docker build --network=musicfeed-test-network -t musicfeed/api-service-build:latest -f "src/PublicApiService/Dockerfile" .
+
 FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
 EXPOSE 80
 
@@ -5,6 +8,7 @@ FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 
 COPY ["src/PublicApiService/PublicApiService.csproj", "/project/src/PublicApiService/"]
 COPY ["tests/PublicApiService.IntegrationTests/PublicApiService.IntegrationTests.csproj", "/project/tests/PublicApiService.IntegrationTests/"]
+COPY ["tests/PublicApiService.UnitTests/PublicApiService.UnitTests.csproj", "/project/tests/PublicApiService.UnitTests/"]
 COPY ["PublicApiService.sln", "/project/"]
 RUN dotnet restore "/project/PublicApiService.sln"
 
