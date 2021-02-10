@@ -15,10 +15,6 @@ namespace PublicApiService.GraphQL
 			FieldAsync<NonNullGraphType<ListGraphType<NonNullGraphType<ReleaseType>>>>(
 				"newReleases",
 				resolve: async context => await GetProvider<INewReleasesProvider>().GetNewReleases(context.CancellationToken));
-
-			FieldAsync<NonNullGraphType<DiagnosticsType>>(
-				"diagnostics",
-				resolve: async context => await GetProvider<IDiagnosticsProvider>().GetDiagnostics(context.CancellationToken));
 		}
 	}
 }

@@ -1,12 +1,12 @@
 using System;
 using GraphQL.Server;
 using GraphQL.Server.Ui.Playground;
+using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using PublicApiService.GraphQL;
 using PublicApiService.Interfaces;
@@ -36,7 +36,6 @@ namespace PublicApiService
 			services.AddScoped<ApiQuery>();
 
 			services.AddScoped<INewReleasesProvider, NewReleasesProvider>();
-			services.AddScoped<IDiagnosticsProvider, DiagnosticsProvider>();
 
 			services.AddGraphQL()
 				.AddSystemTextJson()
@@ -44,8 +43,7 @@ namespace PublicApiService
 				.AddDataLoader()
 				.AddGraphTypes(ServiceLifetime.Scoped);
 
-			services.AddHealthChecks()
-				.AddCheck<UpdatesServiceHealthCheck>(nameof(UpdatesServiceHealthCheck), failureStatus: HealthStatus.Unhealthy, tags: new[] { "ready" });
+			services.AddHealthChecks();
 
 			services.AddUpdatesServiceClient(o =>
 			{
@@ -75,11 +73,13 @@ namespace PublicApiService
 				endpoints.MapHealthChecks("/health/ready", new HealthCheckOptions
 				{
 					Predicate = check => check.Tags.Contains("ready"),
+					ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse,
 				});
 
 				endpoints.MapHealthChecks("/health/live", new HealthCheckOptions
 				{
 					Predicate = check => check.Tags.Contains("live"),
+					ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse,
 				});
 			});
 		}

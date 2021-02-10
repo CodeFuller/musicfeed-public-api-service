@@ -4,9 +4,9 @@
 # eval $(minikube -p minikube docker-env)
 # docker-compose -f "tests/PublicApiService.IntegrationTests/docker-compose.yml" up --detach --no-build
 # docker build --network=musicfeed-test-network -t musicfeed/api-service:latest -f "src/PublicApiService/Dockerfile" .
-# kubectl create -f ../musicfeed-updates-service.git/deploy/updates-service.yaml -f "deploy/api-service.dev.yaml"
+# kubectl create -f "../musicfeed-updates-service.git/deploy/updates-service.yaml" -f "deploy/api-service.dev.yaml"
 # kubectl port-forward service/api-service 8080:80
-# kubectl delete -f ../musicfeed-updates-service.git/deploy/updates-service.yaml -f "deploy/api-service.dev.yaml"
+# kubectl delete -f "../musicfeed-updates-service.git/deploy/updates-service.yaml" -f "deploy/api-service.dev.yaml"
 
 apiVersion: v1
 kind: Service
@@ -15,10 +15,10 @@ metadata:
   labels:
     app: api-service
 spec:
+  type: LoadBalancer
   ports:
   - port: 80
     protocol: TCP
-  type: LoadBalancer
   selector:
     app: api-service
 ---

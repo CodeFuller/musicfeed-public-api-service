@@ -1,3 +1,5 @@
+# docker-compose -f "docker-compose.yml" up --detach --no-build
+
 version: '3.5'
 
 services:

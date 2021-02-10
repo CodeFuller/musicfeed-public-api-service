@@ -1,3 +1,5 @@
+# kubectl create -f "../../musicfeed-updates-service.git/deploy/updates-service.yaml" -f "api-service.yaml"
+
 apiVersion: v1
 kind: Service
 metadata:
@@ -5,10 +7,10 @@ metadata:
   labels:
     app: api-service
 spec:
+  type: LoadBalancer
   ports:
   - port: 80
     protocol: TCP
-  type: LoadBalancer
   selector:
     app: api-service
 ---
