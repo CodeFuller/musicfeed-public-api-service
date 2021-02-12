@@ -1,5 +1,7 @@
-# docker-compose -f "tests/PublicApiService.IntegrationTests/docker-compose.yml" up --detach --no-build
-# docker build --network=musicfeed-test-network -t musicfeed/api-service:latest -f "src/PublicApiService/Dockerfile" .
+# docker pull codefuller/musicfeed-updates-service:latest
+# docker-compose -f "../../tests/PublicApiService.IntegrationTests/docker-compose.yml" up --no-build --detach
+# docker build --network=musicfeed-test-network -t musicfeed/api-service:latest -f "Dockerfile" ../..
+# docker-compose -f "../../tests/PublicApiService.IntegrationTests/docker-compose.yml" down
 
 FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
 EXPOSE 80
@@ -23,4 +25,5 @@ RUN dotnet publish "/project/src/PublicApiService/PublicApiService.csproj" --no-
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish /app
+
 ENTRYPOINT ["dotnet", "PublicApiService.dll"]

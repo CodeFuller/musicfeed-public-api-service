@@ -1,4 +1,6 @@
-# docker-compose -f "docker-compose.yml" up --detach --no-build
+# docker pull codefuller/musicfeed-updates-service:latest
+# docker-compose -f "docker-compose.yml" up --no-build
+# docker-compose -f "docker-compose.yml" down
 
 version: '3.5'
 
@@ -10,6 +12,7 @@ services:
       - musicfeed-test-network
     ports:
       - "8102:80"
+      - "8103:81"
 
 networks:
   musicfeed-test-network:
