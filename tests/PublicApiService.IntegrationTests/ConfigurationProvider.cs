@@ -8,14 +8,12 @@ namespace PublicApiService.IntegrationTests
 	{
 		private static bool RunsInsideContainer => Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true";
 
-		public static string UpdatesServiceAddress => RunsInsideContainer ? "http://updates-service:81/" : "http://localhost:8103/";
-
 		public static void ApplyConfiguration(IConfigurationBuilder configBuilder)
 		{
 			if (RunsInsideContainer)
 			{
 				configBuilder
-					.AddInMemoryCollection(new[] { new KeyValuePair<string, string>("services:updatesServiceAddress", UpdatesServiceAddress) });
+					.AddInMemoryCollection(new[] { new KeyValuePair<string, string>("services:updatesServiceAddress", "http://updates-service:81/") });
 			}
 		}
 	}
