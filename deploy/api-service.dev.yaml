@@ -15,7 +15,6 @@ metadata:
   labels:
     app: api-service
 spec:
-  type: LoadBalancer
   ports:
   - port: 80
     protocol: TCP
