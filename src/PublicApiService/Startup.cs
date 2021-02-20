@@ -1,4 +1,5 @@
 using System;
+using AspNetMonsters.ApplicationInsights.AspNetCore;
 using GraphQL.Server;
 using GraphQL.Server.Ui.Playground;
 using HealthChecks.UI.Client;
@@ -55,6 +56,11 @@ namespace PublicApiService
 
 				o.Address = settings.Services.UpdatesServiceAddress;
 			});
+
+			services.AddApplicationInsightsTelemetry();
+			services.AddApplicationInsightsKubernetesEnricher();
+
+			services.AddCloudRoleNameInitializer(configuration["applicationInsights:roleName"]);
 		}
 
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
