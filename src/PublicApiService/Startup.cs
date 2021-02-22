@@ -59,7 +59,6 @@ namespace PublicApiService
 
 			services.AddApplicationInsightsTelemetry();
 			services.AddApplicationInsightsKubernetesEnricher();
-
 			services.AddCloudRoleNameInitializer(configuration["applicationInsights:roleName"]);
 		}
 
