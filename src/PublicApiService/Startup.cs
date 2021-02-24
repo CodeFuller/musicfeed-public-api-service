@@ -1,5 +1,5 @@
 using System;
-using AspNetMonsters.ApplicationInsights.AspNetCore;
+using CodeFuller.MusicFeed.ApplicationInsights;
 using GraphQL.Server;
 using GraphQL.Server.Ui.Playground;
 using HealthChecks.UI.Client;
@@ -57,9 +57,7 @@ namespace PublicApiService
 				o.Address = settings.Services.UpdatesServiceAddress;
 			});
 
-			services.AddApplicationInsightsTelemetry();
-			services.AddApplicationInsightsKubernetesEnricher();
-			services.AddCloudRoleNameInitializer(configuration["applicationInsights:roleName"]);
+			services.AddApplicationInsights(settings => configuration.Bind("applicationInsights", settings));
 		}
 
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
