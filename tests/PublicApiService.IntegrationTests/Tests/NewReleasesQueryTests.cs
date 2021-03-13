@@ -1,8 +1,11 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
 using FluentAssertions;
 using GraphQL;
+using GraphQL.Client.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PublicApiService.IntegrationTests.Responses;
 
@@ -54,7 +57,7 @@ namespace PublicApiService.IntegrationTests.Tests
 
 			using var factory = new CustomWebApplicationFactory();
 			using var client = factory.CreateGraphQLClient();
-			client.HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", "VGVzdFVzZXI6VGVzdFBhc3N3b3Jk");
+			AddAuthorizationToClient(client, "TestUser", "TestPassword");
 
 			// Act
 
@@ -112,7 +115,7 @@ namespace PublicApiService.IntegrationTests.Tests
 
 			using var factory = new CustomWebApplicationFactory();
 			using var client = factory.CreateGraphQLClient();
-			client.HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", "WGVzdFVzZXI6VGVzdFBhc3N3b3Jk");
+			AddAuthorizationToClient(client, "TestUser", "IncorrectPassword");
 
 			// Act
 
@@ -132,6 +135,16 @@ namespace PublicApiService.IntegrationTests.Tests
 			Assert.AreEqual("authorization", errorCodeValue);
 
 			Assert.AreEqual("GraphQL.Validation.ValidationError: You are not authorized to run this operation.\r\nThe current user must be authenticated.", error.Message);
+		}
+
+		private static void AddAuthorizationToClient(GraphQLHttpClient client, string userName, string password)
+		{
+			client.HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", GetBasicAuthenticationInfo(userName, password));
+		}
+
+		private static string GetBasicAuthenticationInfo(string userName, string password)
+		{
+			return Convert.ToBase64String(new UTF8Encoding().GetBytes($"{userName}:{password}"));
 		}
 	}
 }
