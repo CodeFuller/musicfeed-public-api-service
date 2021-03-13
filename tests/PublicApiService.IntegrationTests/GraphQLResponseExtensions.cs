@@ -7,7 +7,7 @@ namespace PublicApiService.IntegrationTests
 {
 	public static class GraphQLResponseExtensions
 	{
-		public static TResponse Verify<TResponse>(this GraphQLResponse<TResponse> response)
+		public static TResponse VerifySuccessfulResponse<TResponse>(this GraphQLResponse<TResponse> response)
 		{
 			if (response.Errors?.Any() ?? false)
 			{
@@ -21,6 +21,27 @@ namespace PublicApiService.IntegrationTests
 			}
 
 			return response.Data;
+		}
+
+		public static void VerifyFailedResponse<TResponse>(this GraphQLResponse<TResponse> response, string expectedErrorCode, string expectedErrorMessage)
+		{
+			Assert.IsNull(response.Data);
+
+			Assert.IsNotNull(response.Errors);
+			Assert.AreEqual(1, response.Errors.Length);
+
+			var error = response.Errors.Single();
+
+			object errorCodeValue = null;
+			error.Extensions?.TryGetValue("code", out errorCodeValue);
+			Assert.AreEqual(expectedErrorCode, errorCodeValue);
+
+			Assert.AreEqual(expectedErrorMessage, error.Message.FixLineEndings());
+		}
+
+		private static string FixLineEndings(this string text)
+		{
+			return text.Replace("\r\n", "\n", StringComparison.Ordinal);
 		}
 	}
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
@@ -65,7 +64,7 @@ namespace PublicApiService.IntegrationTests.Tests
 
 			// Assert
 
-			var data = response.Verify();
+			var data = response.VerifySuccessfulResponse();
 
 			data.NewReleases.Should().Equal(expectedData);
 		}
@@ -89,18 +88,7 @@ namespace PublicApiService.IntegrationTests.Tests
 
 			// Assert
 
-			Assert.IsNull(response.Data);
-
-			Assert.IsNotNull(response.Errors);
-			Assert.AreEqual(1, response.Errors.Length);
-
-			var error = response.Errors.Single();
-
-			object errorCodeValue = null;
-			error.Extensions?.TryGetValue("code", out errorCodeValue);
-			Assert.AreEqual("authorization", errorCodeValue);
-
-			Assert.AreEqual("GraphQL.Validation.ValidationError: You are not authorized to run this operation.\r\nThe current user must be authenticated.", error.Message);
+			response.VerifyFailedResponse("authorization", "GraphQL.Validation.ValidationError: You are not authorized to run this operation.\nThe current user must be authenticated.");
 		}
 
 		[TestMethod]
@@ -123,18 +111,7 @@ namespace PublicApiService.IntegrationTests.Tests
 
 			// Assert
 
-			Assert.IsNull(response.Data);
-
-			Assert.IsNotNull(response.Errors);
-			Assert.AreEqual(1, response.Errors.Length);
-
-			var error = response.Errors.Single();
-
-			object errorCodeValue = null;
-			error.Extensions?.TryGetValue("code", out errorCodeValue);
-			Assert.AreEqual("authorization", errorCodeValue);
-
-			Assert.AreEqual("GraphQL.Validation.ValidationError: You are not authorized to run this operation.\r\nThe current user must be authenticated.", error.Message);
+			response.VerifyFailedResponse("authorization", "GraphQL.Validation.ValidationError: You are not authorized to run this operation.\nThe current user must be authenticated.");
 		}
 
 		private static void AddAuthorizationToClient(GraphQLHttpClient client, string userName, string password)
