@@ -1,5 +1,4 @@
 ﻿using System;
-using GraphQL.Client.Abstractions;
 using GraphQL.Client.Http;
 using GraphQL.Client.Serializer.Newtonsoft;
 using Microsoft.AspNetCore.Hosting;
@@ -25,7 +24,7 @@ namespace PublicApiService.IntegrationTests
 			builder.ConfigureServices(setupServices);
 		}
 
-		public IGraphQLClient CreateGraphQLClient()
+		public GraphQLHttpClient CreateGraphQLClient()
 		{
 			var httpClient = CreateClient();
 

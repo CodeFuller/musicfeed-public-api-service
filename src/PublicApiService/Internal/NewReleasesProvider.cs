@@ -19,11 +19,11 @@ namespace PublicApiService.Internal
 			this.serviceClient = serviceClient ?? throw new ArgumentNullException(nameof(serviceClient));
 		}
 
-		public async Task<IReadOnlyCollection<ReleaseModel>> GetNewReleases(CancellationToken cancellationToken)
+		public async Task<IReadOnlyCollection<ReleaseModel>> GetNewReleases(ApiUserModel apiUser, CancellationToken cancellationToken)
 		{
 			var request = new NewReleasesRequest
 			{
-				UserId = "TestUser",
+				UserId = apiUser.Id,
 			};
 
 			var response = await serviceClient.GetNewReleasesAsync(request, cancellationToken: cancellationToken);

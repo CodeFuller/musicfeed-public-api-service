@@ -7,6 +7,6 @@ namespace PublicApiService.Interfaces
 {
 	public interface INewReleasesProvider
 	{
-		Task<IReadOnlyCollection<ReleaseModel>> GetNewReleases(CancellationToken cancellationToken);
+		Task<IReadOnlyCollection<ReleaseModel>> GetNewReleases(ApiUserModel apiUser, CancellationToken cancellationToken);
 	}
 }
