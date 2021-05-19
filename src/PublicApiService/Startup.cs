@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
-using CodeFuller.MusicFeed.ApplicationInsights;
 using GraphQL.Server;
 using GraphQL.Server.Authorization.AspNetCore;
 using GraphQL.Server.Ui.Playground;
@@ -67,8 +66,6 @@ namespace PublicApiService
 
 				o.Address = settings.Services.UpdatesServiceAddress;
 			});
-
-			services.AddApplicationInsights(settings => configuration.Bind("applicationInsights", settings));
 		}
 
 		private static void AddSecurityServices(IServiceCollection services)
