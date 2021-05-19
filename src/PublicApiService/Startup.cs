@@ -10,6 +10,7 @@ using idunno.Authentication.Basic;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -66,6 +67,8 @@ namespace PublicApiService
 
 				o.Address = settings.Services.UpdatesServiceAddress;
 			});
+
+			services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 		}
 
 		private static void AddSecurityServices(IServiceCollection services)
