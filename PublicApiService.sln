@@ -11,9 +11,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{0BCB3AE3
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PublicApiService.IntegrationTests", "tests\PublicApiService.IntegrationTests\PublicApiService.IntegrationTests.csproj", "{16B13A6E-71A5-4875-BA9E-7CD0F24460BF}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "deploy", "deploy", "{17087091-6E7A-4A5E-AA53-E8E1FE28F431}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "pipelines", "pipelines", "{17087091-6E7A-4A5E-AA53-E8E1FE28F431}"
 	ProjectSection(SolutionItems) = preProject
-		deploy\api-service.yaml = deploy\api-service.yaml
+		pipelines\api-service.yaml = pipelines\api-service.yaml
+		pipelines\azure-pipelines.yaml = pipelines\azure-pipelines.yaml
+		pipelines\deploy-template.yaml = pipelines\deploy-template.yaml
 	EndProjectSection
 EndProject
 Global
