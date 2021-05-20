@@ -96,15 +96,10 @@ stages:
         
         (Get-Content -path $fileName -Raw) -replace "${imagePart}:latest", "${imagePart}:$(ServiceVersion)" | Set-Content -NoNewline -Path $fileName
       failOnStderr: true
-      displayName: Update Image Tag in k8s Manifest
+      displayName: Update Image Tag in K8s Manifest
 
     - task: PublishPipelineArtifact@1
-      displayName: 'Publish Artifact: k8s Manifest'
+      displayName: 'Publish Artifact: K8s Manifest'
       inputs:
         targetPath: pipelines/api-service.yaml
-        artifact: k8s-manifest
-
-- template: deploy-template.yaml
-  parameters:
-    envName: prod
-    envDisplayName: Production
+        artifact: K8s-manifest

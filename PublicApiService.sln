@@ -14,7 +14,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "pipelines", "pipelines", "{17087091-6E7A-4A5E-AA53-E8E1FE28F431}"
 	ProjectSection(SolutionItems) = preProject
 		pipelines\api-service.yaml = pipelines\api-service.yaml
-		pipelines\azure-pipelines.yaml = pipelines\azure-pipelines.yaml
+		pipelines\cd-pipeline.yaml = pipelines\cd-pipeline.yaml
+		pipelines\ci-pipeline.yaml = pipelines\ci-pipeline.yaml
 		pipelines\deploy-template.yaml = pipelines\deploy-template.yaml
 	EndProjectSection
 EndProject

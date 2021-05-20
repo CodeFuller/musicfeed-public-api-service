@@ -1,0 +1,14 @@
+name: $(Build.BuildId)
+
+trigger: none
+
+pool:
+  name: Azure Pipelines
+  vmImage: ubuntu-latest
+
+stages:
+
+- template: deploy-template.yaml
+  parameters:
+    envName: prod
+    envDisplayName: Production
