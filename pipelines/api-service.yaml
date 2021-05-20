@@ -1,4 +1,4 @@
-# kubectl create -f "../../musicfeed-updates-service.git/deploy/updates-service.yaml" -f "api-service.yaml"
+# kubectl create -f "../../musicfeed-updates-service.git/pipelines/updates-service.yaml" -f "api-service.yaml"
 
 apiVersion: v1
 kind: Service
