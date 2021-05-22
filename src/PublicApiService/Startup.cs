@@ -103,6 +103,12 @@ namespace PublicApiService
 				app.UseDeveloperExceptionPage();
 			}
 
+			// We make service available at sub-path /api as a workaround for missing URL rewrite in ALB controller.
+			// This could be removed when URL rewrite is supported by ALB controller.
+			// Tracking issue: https://github.com/kubernetes-sigs/aws-load-balancer-controller/issues/1571
+			// The service is still available at root path / - https://stackoverflow.com/questions/53429942/
+			app.UsePathBase("/api");
+
 			app.UseRouting();
 
 			app.UseAuthentication();

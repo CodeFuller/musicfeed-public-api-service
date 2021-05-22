@@ -30,7 +30,7 @@ namespace PublicApiService.IntegrationTests
 
 			var clientOptions = new GraphQLHttpClientOptions
 			{
-				EndPoint = new Uri(httpClient.BaseAddress, "graphql"),
+				EndPoint = new Uri(httpClient.BaseAddress, "api/graphql"),
 			};
 
 			return new GraphQLHttpClient(clientOptions, new NewtonsoftJsonSerializer(), httpClient);
