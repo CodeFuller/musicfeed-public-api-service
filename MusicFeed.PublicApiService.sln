@@ -1,0 +1,47 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32112.339
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{318268DE-8C84-4934-ADB9-6A944DBF199B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{0BCB3AE3-8802-4F13-A0B0-1DC13025DA06}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "pipelines", "pipelines", "{17087091-6E7A-4A5E-AA53-E8E1FE28F431}"
+	ProjectSection(SolutionItems) = preProject
+		pipelines\api-service.yaml = pipelines\api-service.yaml
+		pipelines\cd-pipeline.yaml = pipelines\cd-pipeline.yaml
+		pipelines\ci-pipeline.yaml = pipelines\ci-pipeline.yaml
+		pipelines\deploy-template.yaml = pipelines\deploy-template.yaml
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MusicFeed.PublicApiService", "src\MusicFeed.PublicApiService\MusicFeed.PublicApiService.csproj", "{FDBBAEDF-E7C6-4A6C-A9C2-468FD35CC0DE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MusicFeed.PublicApiService.IntegrationTests", "tests\MusicFeed.PublicApiService.IntegrationTests\MusicFeed.PublicApiService.IntegrationTests.csproj", "{A556E009-410D-4B04-9776-BBBAFAC9C29F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FDBBAEDF-E7C6-4A6C-A9C2-468FD35CC0DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDBBAEDF-E7C6-4A6C-A9C2-468FD35CC0DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FDBBAEDF-E7C6-4A6C-A9C2-468FD35CC0DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FDBBAEDF-E7C6-4A6C-A9C2-468FD35CC0DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A556E009-410D-4B04-9776-BBBAFAC9C29F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A556E009-410D-4B04-9776-BBBAFAC9C29F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A556E009-410D-4B04-9776-BBBAFAC9C29F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A556E009-410D-4B04-9776-BBBAFAC9C29F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{FDBBAEDF-E7C6-4A6C-A9C2-468FD35CC0DE} = {318268DE-8C84-4934-ADB9-6A944DBF199B}
+		{A556E009-410D-4B04-9776-BBBAFAC9C29F} = {0BCB3AE3-8802-4F13-A0B0-1DC13025DA06}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A1E5A42E-55DC-45BE-BA73-507E66AA59AA}
+	EndGlobalSection
+EndGlobal
