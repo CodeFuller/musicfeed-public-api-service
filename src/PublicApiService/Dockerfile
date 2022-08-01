@@ -3,10 +3,10 @@
 # docker build --network=musicfeed-test-network -t musicfeed/api-service:latest -f "Dockerfile" ../..
 # docker-compose -f "../../tests/PublicApiService.IntegrationTests/docker-compose.yml" down
 
-FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 EXPOSE 80
 
-FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 
 COPY ["src/PublicApiService/PublicApiService.csproj", "/project/src/PublicApiService/"]
 COPY ["tests/PublicApiService.IntegrationTests/PublicApiService.IntegrationTests.csproj", "/project/tests/PublicApiService.IntegrationTests/"]
