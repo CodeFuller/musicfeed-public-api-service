@@ -28,7 +28,7 @@ jobs:
           inputs:
             connectionType: Kubernetes Service Connection
             kubernetesServiceEndpoint: AWS EKS Cluster
-            namespace: musicfeed-${{ parameters.EnvName }}
+            namespace: $(GlobalConfig.Kubernetes.Namespace)
             command: upgrade
             chartName: $(Pipeline.Workspace)/BuildPipeline/$(HelmChartName)/$(HelmChartName)
             releaseName: $(ServiceName)
@@ -42,6 +42,6 @@ jobs:
           inputs:
             connectionType: Kubernetes Service Connection
             kubernetesServiceEndpoint: AWS EKS Cluster
-            namespace: musicfeed-${{ parameters.EnvName }}
+            namespace: $(GlobalConfig.Kubernetes.Namespace)
             command: rollout
             arguments: status -w deployment/$(ServiceName) --timeout=5m
