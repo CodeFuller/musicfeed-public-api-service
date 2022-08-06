@@ -1,0 +1,76 @@
+parameters:
+- name: envName
+  type: string
+- name: envDisplayName
+  type: string
+- name: subdomainName
+  type: string
+
+stages:
+- stage: DeployTo${{ parameters.envDisplayName }}
+  displayName: Deploy to ${{ parameters.envDisplayName }} Environment
+  variables:
+    - group: MusicFeedVariables.${{ parameters.envName }}
+    - name: ServiceName
+      value: musicfeed-api-service
+      readonly: true
+  jobs:
+  - deployment: DeployJob
+    displayName: Deploy to ${{ parameters.envDisplayName }} Environment
+    environment: ${{ parameters.envName }}
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - powershell: |
+              $buildBranch = '$(resources.pipeline.BuildPipeline.sourceBranch)'
+              $deployBranch = '$(Build.SourceBranch)'
+
+              if ($deployBranch -ne $buildBranch) {
+                throw "Deployment branch does not match build branch: '$deployBranch' != '$buildBranch'"
+              }
+            displayName: Check Deployment
+
+          - powershell: |
+              $buildVersion = '$(resources.pipeline.BuildPipeline.runName)'
+              if ($buildVersion -notmatch '^(\d+\.\d+\.\d+)\.(\d+)(-preview)?$') {
+                  throw "Failed to parse build version '$buildVersion'"
+              }
+
+              if ($Matches.3) {
+                  $helmChartVersion = "$($Matches.1)$($Matches.3)-$($Matches.2)"
+              } else {
+                  $helmChartVersion = $Matches.1
+              }
+
+              Write-Host "##vso[build.updatebuildnumber]${{ parameters.envName }}-$buildVersion-#$(Build.BuildId)"
+              Write-Host "##vso[task.setvariable variable=BuildVersion]$buildVersion"
+              Write-Host "##vso[task.setvariable variable=HelmChartName]$(ServiceName)-$helmChartVersion.tgz"
+            displayName: Define Build Version
+
+          - download: BuildPipeline
+            displayName: Download Helm Chart
+            artifact: $(HelmChartName)
+
+          - task: HelmDeploy@0
+            displayName: Install Helm Chart
+            inputs:
+              connectionType: Kubernetes Service Connection
+              kubernetesServiceEndpoint: AWS EKS Cluster
+              namespace: musicfeed-${{ parameters.envName }}
+              command: upgrade
+              chartName: $(Pipeline.Workspace)/BuildPipeline/$(HelmChartName)/$(HelmChartName)
+              releaseName: $(ServiceName)
+              overrideValues: |
+                certificateArn=$(AWS.CertificateArn)
+                domainName=${{ parameters.subdomainName }}.$(DomainName)
+              waitForExecution: false
+
+          - task: Kubernetes@1
+            displayName: Wait For Rollout
+            inputs:
+              connectionType: Kubernetes Service Connection
+              kubernetesServiceEndpoint: AWS EKS Cluster
+              namespace: musicfeed-${{ parameters.envName }}
+              command: rollout
+              arguments: status -w deployment/$(ServiceName) --timeout=5m

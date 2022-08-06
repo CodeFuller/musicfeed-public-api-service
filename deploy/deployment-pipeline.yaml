@@ -6,13 +6,26 @@ pool:
   name: Azure Pipelines
   vmImage: ubuntu-latest
 
+resources:
+  pipelines:
+  - pipeline: BuildPipeline
+    source: Build API Service
+    branch: master
+
+variables:
+  - name: ServiceName
+    value: musicfeed-api-service
+    readonly: true
+
 stages:
-- template: deploy-template.yaml
+- template: deployment-pipeline-template.yaml
   parameters:
     envName: test
     envDisplayName: Test
+    subdomainName: musicfeed-test
 
-- template: deploy-template.yaml
+- template: deployment-pipeline-template.yaml
   parameters:
     envName: prod
     envDisplayName: Production
+    subdomainName: musicfeed
