@@ -11,6 +11,7 @@ jobs:
   displayName: Deploy to ${{ parameters.EnvDisplayName }} Environment
   environment: ${{ parameters.EnvName }}
   variables:
+    - group: MusicFeedVariables
     - group: MusicFeedVariables.${{ parameters.EnvName }}
     - name: ServiceName
       value: musicfeed-api-service
@@ -33,8 +34,8 @@ jobs:
             chartName: $(Pipeline.Workspace)/BuildPipeline/$(HelmChartName)/$(HelmChartName)
             releaseName: $(ServiceName)
             overrideValues: |
-              certificateArn=$(AWS.CertificateArn)
-              domainName=${{ parameters.SubdomainName }}.$(DomainName)
+              certificateArn=$(GlobalConfig.AWS.CertificateArn)
+              domainName=${{ parameters.SubdomainName }}.$(GlobalConfig.DomainName)
             waitForExecution: false
 
         - task: Kubernetes@1
