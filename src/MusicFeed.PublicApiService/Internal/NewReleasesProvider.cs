@@ -5,8 +5,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using MusicFeed.PublicApiService.Interfaces;
 using MusicFeed.PublicApiService.Models;
-using UpdatesService.Client;
-using UpdatesService.Grpc;
+using MusicFeed.UpdatesService.Client;
+using MusicFeed.UpdatesService.Grpc;
 
 namespace MusicFeed.PublicApiService.Internal
 {

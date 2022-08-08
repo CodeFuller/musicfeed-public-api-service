@@ -18,7 +18,7 @@ using MusicFeed.PublicApiService.GraphQL;
 using MusicFeed.PublicApiService.Interfaces;
 using MusicFeed.PublicApiService.Internal;
 using MusicFeed.PublicApiService.Settings;
-using UpdatesService.Client;
+using MusicFeed.UpdatesService.Client;
 
 namespace MusicFeed.PublicApiService
 {
