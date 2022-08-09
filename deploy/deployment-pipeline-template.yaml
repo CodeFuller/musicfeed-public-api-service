@@ -13,9 +13,6 @@ jobs:
   variables:
     - group: MusicFeedVariables
     - group: MusicFeedVariables.${{ parameters.EnvName }}
-    - name: ServiceName
-      value: musicfeed-api-service
-      readonly: true
   strategy:
     runOnce:
       deploy:
