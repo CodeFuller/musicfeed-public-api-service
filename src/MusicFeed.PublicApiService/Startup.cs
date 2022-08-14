@@ -115,7 +115,10 @@ namespace MusicFeed.PublicApiService
 			app.UseAuthorization();
 
 			app.UseGraphQL<ApiSchema>();
-			app.UseGraphQLPlayground(new GraphQLPlaygroundOptions());
+			app.UseGraphQLPlayground(new GraphQLPlaygroundOptions
+			{
+				GraphQLEndPoint = "/api/graphql",
+			});
 
 			app.UseEndpoints(endpoints =>
 			{

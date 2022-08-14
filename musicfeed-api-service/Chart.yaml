@@ -5,4 +5,4 @@ description: A Helm chart for Music Feed API Service.
 type: application
 
 version: 1.0.1
-appVersion: "0.1.1"
+appVersion: "0.1.2"
