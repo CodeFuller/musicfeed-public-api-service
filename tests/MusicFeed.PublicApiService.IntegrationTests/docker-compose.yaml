@@ -1,20 +1,12 @@
 # docker pull codefuller/musicfeed-updates-service:latest
-# docker compose up --no-build
+# docker compose up
 # docker compose down
 
 version: '3.5'
 
 services:
-
   updates-service:
     image: codefuller/musicfeed-updates-service:latest
-    networks:
-      - musicfeed-test-network
     ports:
       - "8102:80"
       - "8103:81"
-
-networks:
-  musicfeed-test-network:
-    name: musicfeed-test-network
-    driver: bridge

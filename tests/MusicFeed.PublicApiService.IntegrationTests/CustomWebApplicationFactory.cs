@@ -20,7 +20,6 @@ namespace MusicFeed.PublicApiService.IntegrationTests
 		{
 			base.ConfigureWebHost(builder);
 
-			builder.ConfigureAppConfiguration(ConfigurationProvider.ApplyConfiguration);
 			builder.ConfigureServices(setupServices);
 		}
 
