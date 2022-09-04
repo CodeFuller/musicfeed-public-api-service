@@ -1,12 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Threading;
 using GraphQL.Server;
 using GraphQL.Server.Authorization.AspNetCore;
 using GraphQL.Server.Ui.Playground;
 using GraphQL.Validation;
 using HealthChecks.UI.Client;
-using idunno.Authentication.Basic;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
@@ -73,27 +71,13 @@ namespace MusicFeed.PublicApiService
 
 		private static void AddSecurityServices(IServiceCollection services)
 		{
-			services.AddAuthentication(BasicAuthenticationDefaults.AuthenticationScheme)
-				.AddBasic(options =>
-				{
-					options.Events = new BasicAuthenticationEvents
-					{
-						OnValidateCredentials = context =>
-						{
-							var userChecker = context.HttpContext.RequestServices.GetRequiredService<IUserChecker>();
-							return userChecker.CheckUser(context, CancellationToken.None);
-						},
-					};
-				});
+			services.AddAuthentication();
 
 			services.AddTransient<IValidationRule, AuthorizationValidationRule>()
 				.AddAuthorization(options =>
 				{
 					options.AddPolicy("IsAuthenticated", p => p.RequireAuthenticatedUser());
 				});
-
-			services.AddSingleton<IUserChecker, UserChecker>();
-			services.AddSingleton<IUserAuthenticator, UserAuthenticator>();
 		}
 
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

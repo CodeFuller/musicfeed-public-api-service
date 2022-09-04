@@ -1,10 +1,6 @@
-﻿using System;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using FluentAssertions;
 using GraphQL;
-using GraphQL.Client.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MusicFeed.PublicApiService.IntegrationTests.Responses;
 
@@ -56,7 +52,6 @@ namespace MusicFeed.PublicApiService.IntegrationTests.Tests
 
 			using var factory = new CustomWebApplicationFactory();
 			using var client = factory.CreateGraphQLClient();
-			AddAuthorizationToClient(client, "TestUser", "TestPassword");
 
 			// Act
 
@@ -103,7 +98,6 @@ namespace MusicFeed.PublicApiService.IntegrationTests.Tests
 
 			using var factory = new CustomWebApplicationFactory();
 			using var client = factory.CreateGraphQLClient();
-			AddAuthorizationToClient(client, "TestUser", "IncorrectPassword");
 
 			// Act
 
@@ -112,16 +106,6 @@ namespace MusicFeed.PublicApiService.IntegrationTests.Tests
 			// Assert
 
 			response.VerifyFailedResponse("authorization", "GraphQL.Validation.ValidationError: You are not authorized to run this operation.\nThe current user must be authenticated.");
-		}
-
-		private static void AddAuthorizationToClient(GraphQLHttpClient client, string userName, string password)
-		{
-			client.HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", GetBasicAuthenticationInfo(userName, password));
-		}
-
-		private static string GetBasicAuthenticationInfo(string userName, string password)
-		{
-			return Convert.ToBase64String(new UTF8Encoding().GetBytes($"{userName}:{password}"));
 		}
 	}
 }
