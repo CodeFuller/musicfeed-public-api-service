@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using GraphQL.Client.Http;
 using GraphQL.Client.Serializer.Newtonsoft;
 using Microsoft.AspNetCore.Hosting;

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using GraphQL;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
