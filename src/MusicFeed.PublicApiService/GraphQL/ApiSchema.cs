@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using GraphQL.Server.Authorization.AspNetCore;
 using GraphQL.Types;
 using Microsoft.Extensions.DependencyInjection;

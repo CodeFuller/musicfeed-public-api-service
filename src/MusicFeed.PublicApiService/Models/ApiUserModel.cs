@@ -1,4 +1,4 @@
-﻿namespace MusicFeed.PublicApiService.Models
+namespace MusicFeed.PublicApiService.Models
 {
 	public class ApiUserModel
 	{

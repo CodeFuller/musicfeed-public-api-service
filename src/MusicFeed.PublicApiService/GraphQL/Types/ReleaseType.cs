@@ -1,4 +1,4 @@
-﻿using GraphQL.Types;
+using GraphQL.Types;
 using MusicFeed.PublicApiService.Models;
 
 namespace MusicFeed.PublicApiService.GraphQL.Types

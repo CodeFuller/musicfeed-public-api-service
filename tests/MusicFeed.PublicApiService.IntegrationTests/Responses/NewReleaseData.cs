@@ -1,4 +1,4 @@
-﻿namespace MusicFeed.PublicApiService.IntegrationTests.Responses
+namespace MusicFeed.PublicApiService.IntegrationTests.Responses
 {
 	public record NewReleaseData
 	{

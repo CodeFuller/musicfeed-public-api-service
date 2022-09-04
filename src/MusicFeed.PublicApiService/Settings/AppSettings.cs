@@ -1,4 +1,4 @@
-﻿namespace MusicFeed.PublicApiService.Settings
+namespace MusicFeed.PublicApiService.Settings
 {
 	public class AppSettings
 	{
