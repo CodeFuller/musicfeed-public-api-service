@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
@@ -8,7 +7,6 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using GraphQL;
 using GraphQL.Client.Http;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -61,12 +59,7 @@ namespace MusicFeed.PublicApiService.IntegrationTests.Tests
 				}",
 			};
 
-			await using var factory = new CustomWebApplicationFactory(setupConfiguration: configBuilder => configBuilder
-				.AddInMemoryCollection(new[]
-				{
-					new KeyValuePair<string, string>("jwtSettings:validIssuer", "https://identity-service-stub/"),
-				}));
-
+			await using var factory = new CustomWebApplicationFactory();
 			using var client = factory.CreateGraphQLClient();
 			await AddAuthorizationToClient(client, factory.Services);
 

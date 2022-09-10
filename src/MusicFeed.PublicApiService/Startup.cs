@@ -84,33 +84,14 @@ namespace MusicFeed.PublicApiService
 						throw new InvalidOperationException("The address of Identity service is not configured");
 					}
 
-					string validIssuer;
-					string validAudience;
-
-					var jwtSettings = settings.JwtSettings;
-					if (jwtSettings.ValidIssuer != null)
-					{
-						validIssuer = jwtSettings.ValidIssuer.OriginalString;
-						validAudience = new Uri(jwtSettings.ValidIssuer, "resources").OriginalString;
-					}
-					else
-					{
-						validIssuer = null;
-						validAudience = null;
-					}
-
 					options.RequireHttpsMetadata = false;
 					options.Authority = identityServiceAddress.OriginalString;
-					options.Audience = validAudience;
+					options.Audience = "musicfeed-api";
 
 					options.TokenValidationParameters = new TokenValidationParameters
 					{
 						ValidateIssuer = true,
-						ValidIssuer = validIssuer,
-
 						ValidateAudience = true,
-						ValidAudience = validAudience,
-
 						ValidateLifetime = true,
 						ValidateIssuerSigningKey = true,
 						ValidateActor = true,
