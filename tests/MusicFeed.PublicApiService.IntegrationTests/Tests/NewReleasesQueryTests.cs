@@ -1,8 +1,19 @@
+using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Net.Http.Json;
+using System.Text;
 using System.Threading.Tasks;
 using FluentAssertions;
 using GraphQL;
+using GraphQL.Client.Http;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MusicFeed.PublicApiService.IntegrationTests.Responses;
+using MusicFeed.PublicApiService.Settings;
 
 namespace MusicFeed.PublicApiService.IntegrationTests.Tests
 {
@@ -50,8 +61,14 @@ namespace MusicFeed.PublicApiService.IntegrationTests.Tests
 				}",
 			};
 
-			using var factory = new CustomWebApplicationFactory();
+			await using var factory = new CustomWebApplicationFactory(setupConfiguration: configBuilder => configBuilder
+				.AddInMemoryCollection(new[]
+				{
+					new KeyValuePair<string, string>("jwtSettings:validIssuer", "https://identity-service-stub/"),
+				}));
+
 			using var client = factory.CreateGraphQLClient();
+			await AddAuthorizationToClient(client, factory.Services);
 
 			// Act
 
@@ -74,7 +91,7 @@ namespace MusicFeed.PublicApiService.IntegrationTests.Tests
 				Query = @"{ newReleases { id } }",
 			};
 
-			using var factory = new CustomWebApplicationFactory();
+			await using var factory = new CustomWebApplicationFactory();
 			using var client = factory.CreateGraphQLClient();
 
 			// Act
@@ -83,29 +100,44 @@ namespace MusicFeed.PublicApiService.IntegrationTests.Tests
 
 			// Assert
 
-			response.VerifyFailedResponse("authorization", "GraphQL.Validation.ValidationError: You are not authorized to run this operation.\nThe current user must be authenticated.");
+			var expectedError = new StringBuilder();
+			expectedError.AppendLine("GraphQL.Validation.ValidationError: You are not authorized to run this operation.");
+			expectedError.AppendLine("The current user must be authenticated.");
+			expectedError.Append("Required claim 'scope' with any value of 'musicfeed-api' is not present.");
+
+			response.VerifyFailedResponse("authorization", expectedError.ToString());
 		}
 
-		[TestMethod]
-		public async Task NewReleasesQuery_ForUnknownUser_ReturnsError()
+		private static async Task AddAuthorizationToClient(GraphQLHttpClient client, IServiceProvider serviceProvider)
 		{
-			// Arrange
+			var jwt = await IssueJwt(serviceProvider);
 
-			var request = new GraphQLRequest
+			client.HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwt);
+		}
+
+		private static async Task<string> IssueJwt(IServiceProvider serviceProvider)
+		{
+			using var httpClient = new HttpClient();
+
+			var issueTokenRequest = new
 			{
-				Query = @"{ newReleases { id } }",
+				UserId = "Some User Id",
 			};
 
-			using var factory = new CustomWebApplicationFactory();
-			using var client = factory.CreateGraphQLClient();
+			var identityServiceAddress = GetIdentityServiceAddress(serviceProvider);
 
-			// Act
+			var stubTokenAddress = new Uri(identityServiceAddress, "stub/token");
+			using var issueTokenResponse = await httpClient.PostAsJsonAsync(stubTokenAddress, issueTokenRequest);
+			issueTokenResponse.EnsureSuccessStatusCode();
 
-			var response = await client.SendQueryAsync<NewReleasesResponse>(request);
+			return await issueTokenResponse.Content.ReadAsStringAsync();
+		}
 
-			// Assert
+		private static Uri GetIdentityServiceAddress(IServiceProvider serviceProvider)
+		{
+			var settings = serviceProvider.GetRequiredService<IOptions<AppSettings>>().Value;
 
-			response.VerifyFailedResponse("authorization", "GraphQL.Validation.ValidationError: You are not authorized to run this operation.\nThe current user must be authenticated.");
+			return settings.Services.IdentityServiceAddress;
 		}
 	}
 }

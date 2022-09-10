@@ -1,10 +1,16 @@
-# docker pull codefuller/musicfeed-updates-service:latest
 # docker compose up --no-build
 # docker compose down
 
 version: '3.5'
 
 services:
+  identity-service:
+    image: codefuller/musicfeed-identity-service:latest
+    ports:
+      - "8101:80"
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Stub"
+
   updates-service:
     image: codefuller/musicfeed-updates-service:latest
     ports:

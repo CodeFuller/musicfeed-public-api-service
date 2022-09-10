@@ -36,7 +36,7 @@ namespace MusicFeed.PublicApiService.IntegrationTests
 			error.Extensions?.TryGetValue("code", out errorCodeValue);
 			Assert.AreEqual(expectedErrorCode, errorCodeValue);
 
-			Assert.AreEqual(expectedErrorMessage, error.Message.FixLineEndings());
+			Assert.AreEqual(expectedErrorMessage.FixLineEndings(), error.Message.FixLineEndings());
 		}
 
 		private static string FixLineEndings(this string text)

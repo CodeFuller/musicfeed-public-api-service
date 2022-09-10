@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using MusicFeed.PublicApiService.GraphQL;
 using MusicFeed.PublicApiService.Interfaces;
 using MusicFeed.PublicApiService.Internal;
@@ -60,7 +61,7 @@ namespace MusicFeed.PublicApiService
 				var settings = configuration.Get<AppSettings>();
 				if (settings.Services.UpdatesServiceAddress == null)
 				{
-					throw new InvalidOperationException("The address of UpdatesService is not configured");
+					throw new InvalidOperationException("The address of Updates service is not configured");
 				}
 
 				o.Address = settings.Services.UpdatesServiceAddress;
@@ -69,14 +70,65 @@ namespace MusicFeed.PublicApiService
 			services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 		}
 
-		private static void AddSecurityServices(IServiceCollection services)
+		private void AddSecurityServices(IServiceCollection services)
 		{
-			services.AddAuthentication();
+			services
+				.AddAuthentication("Bearer")
+				.AddJwtBearer("Bearer", options =>
+				{
+					var settings = configuration.Get<AppSettings>();
 
-			services.AddTransient<IValidationRule, AuthorizationValidationRule>()
+					var identityServiceAddress = settings.Services.IdentityServiceAddress;
+					if (settings.Services.IdentityServiceAddress == null)
+					{
+						throw new InvalidOperationException("The address of Identity service is not configured");
+					}
+
+					string validIssuer;
+					string validAudience;
+
+					var jwtSettings = settings.JwtSettings;
+					if (jwtSettings.ValidIssuer != null)
+					{
+						validIssuer = jwtSettings.ValidIssuer.OriginalString;
+						validAudience = new Uri(jwtSettings.ValidIssuer, "resources").OriginalString;
+					}
+					else
+					{
+						validIssuer = null;
+						validAudience = null;
+					}
+
+					options.RequireHttpsMetadata = false;
+					options.Authority = identityServiceAddress.OriginalString;
+					options.Audience = validAudience;
+
+					options.TokenValidationParameters = new TokenValidationParameters
+					{
+						ValidateIssuer = true,
+						ValidIssuer = validIssuer,
+
+						ValidateAudience = true,
+						ValidAudience = validAudience,
+
+						ValidateLifetime = true,
+						ValidateIssuerSigningKey = true,
+						ValidateActor = true,
+						ValidateTokenReplay = true,
+
+						ValidTypes = new[] { "at+jwt" },
+					};
+				});
+
+			services
+				.AddTransient<IValidationRule, AuthorizationValidationRule>()
 				.AddAuthorization(options =>
 				{
-					options.AddPolicy("IsAuthenticated", p => p.RequireAuthenticatedUser());
+					options.AddPolicy("HasMusicFeedApiScope", policy =>
+					{
+						policy.RequireAuthenticatedUser();
+						policy.RequireClaim("scope", "musicfeed-api");
+					});
 				});
 		}
 

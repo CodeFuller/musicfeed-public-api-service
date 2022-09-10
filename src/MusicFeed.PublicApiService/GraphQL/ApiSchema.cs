@@ -10,7 +10,7 @@ namespace MusicFeed.PublicApiService.GraphQL
 		public ApiSchema(IServiceProvider services)
 			: base(services)
 		{
-			this.AuthorizeWith("IsAuthenticated");
+			this.AuthorizeWith("HasMusicFeedApiScope");
 
 			Query = services.GetRequiredService<ApiQuery>();
 		}
