@@ -47,6 +47,8 @@ spec:
             - name: {{ .name }}
               value: {{ .value }}
           {{- end }}
+            - name: SERVICES__IDENTITYSERVICEADDRESS
+              value: {{ .Values.identityServiceAddress }}
           livenessProbe:
             httpGet:
               path: /health/live

@@ -84,7 +84,9 @@ namespace MusicFeed.PublicApiService
 						throw new InvalidOperationException("The address of Identity service is not configured");
 					}
 
-					options.RequireHttpsMetadata = false;
+					// For Development & IT, we have http URL for identity service (running in container).
+					options.RequireHttpsMetadata = !environment.IsDevelopment();
+
 					options.Authority = identityServiceAddress.OriginalString;
 					options.Audience = "musicfeed-api";
 

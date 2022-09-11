@@ -33,6 +33,7 @@ jobs:
             overrideValues: |
               certificateArn=$(GlobalConfig.AWS.CertificateArn)
               domainName=${{ parameters.SubdomainName }}.$(GlobalConfig.DomainName)
+              identityServiceAddress=https://${{ parameters.SubdomainName }}.$(GlobalConfig.DomainName)/identity
             waitForExecution: false
 
         - task: Kubernetes@1
